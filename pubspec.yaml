@@ -37,10 +37,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   get:
   naver_map_plugin: ^0.9.6
+  hexcolor: ^3.0.1
+  json_annotation: ^4.8.0
+  intl: ^0.18.0
+  flutter_naver_map: ^0.10.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  json_serializable: ^6.6.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -51,6 +57,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+# flutter app icons
+flutter_icons:
+  image_path_android: "assets/images/app_launcher.png"
+  image_path_ios: "assets/images/app_launcher.png"
+  android: "app_launcher" # can specify file name here e.g. "ic_launcher"
+  ios: true # c
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -60,9 +72,40 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/appbar_title.png
+    - assets/images/2.0x/appbar_title.png
+    - assets/images/3.0x/appbar_title.png
+    - assets/images/thumb.png
+    - assets/images/2.0x/thumb.png
+    - assets/images/3.0x/thumb.png
+    - assets/images/search.png
+    - assets/images/2.0x/search.png
+    - assets/images/3.0x/search.png
+    - assets/images/handle.png
+    - assets/images/2.0x/handle.png
+    - assets/images/3.0x/handle.png
+    - assets/images/reload.png
+    - assets/images/2.0x/reload.png
+    - assets/images/3.0x/reload.png
+    - assets/images/check.png
+    - assets/images/2.0x/check.png
+    - assets/images/3.0x/check.png
+    - assets/images/check_filled.png
+    - assets/images/2.0x/check_filled.png
+    - assets/images/3.0x/check_filled.png
+    - assets/images/heart.png
+    - assets/images/2.0x/heart.png
+    - assets/images/3.0x/heart.png
+    - assets/images/calendar.png
+    - assets/images/2.0x/calendar.png
+    - assets/images/3.0x/calendar.png
+    - assets/images/clock.png
+    - assets/images/2.0x/clock.png
+    - assets/images/3.0x/clock.png
+    - assets/images/phone.png
+    - assets/images/2.0x/phone.png
+    - assets/images/3.0x/phone.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

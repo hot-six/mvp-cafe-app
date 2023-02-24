@@ -1,5 +1,8 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_naver_map (0.10.1):
+    - Flutter
+    - NMapsMap
   - naver_map_plugin (0.9.4):
     - Flutter
     - NMapsMap
@@ -9,6 +12,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
   - naver_map_plugin (from `.symlinks/plugins/naver_map_plugin/ios`)
 
 SPEC REPOS:
@@ -19,11 +23,14 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_naver_map:
+    :path: ".symlinks/plugins/flutter_naver_map/ios"
   naver_map_plugin:
     :path: ".symlinks/plugins/naver_map_plugin/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_naver_map: 6c7f2f09a8f05722ac344149bbf9cf52a3d9eeaf
   naver_map_plugin: d1d67733c56b20b88270d9da51218e18fa916232
   NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
   NMapsMap: 926c3a303d381a24bec8da3cd6e198f50af93ae9
