@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nado_client_mvp">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <application
-        android:label="nado_client_mvp"
+        android:label="나도 손님"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -32,7 +36,7 @@
             android:value="2" />
 
         <meta-data
-                android:name="com.naver.maps.map.CLIENT_ID"
-                android:value="${naverMapApiKey}" />
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="${naverMapApiKey}" />
 	</application>
 </manifest>
