@@ -45,7 +45,7 @@ dependencies:
   dio: ^5.0.1
   flutter_dotenv: ^5.0.2
   flutter_secure_storage: ^8.0.0
-  shared_preferences: ^2.0.18
+  shared_preferences: ^2.0.20
   dropdown_button2: ^2.0.0
   carousel_slider: ^4.2.1
   infinite_scroll_pagination: ^3.2.0
@@ -111,9 +111,9 @@ flutter:
     - assets/images/heart.png
     - assets/images/2.0x/heart.png
     - assets/images/3.0x/heart.png
-    - assets/images/heart_filled.png
-    - assets/images/2.0x/heart_filled.png
-    - assets/images/3.0x/heart_filled.png
+    - assets/images/heart_fill.png
+    - assets/images/2.0x/heart_fill.png
+    - assets/images/3.0x/heart_fill.png
     - assets/images/calendar.png
     - assets/images/2.0x/calendar.png
     - assets/images/3.0x/calendar.png
@@ -159,6 +159,18 @@ flutter:
     - assets/images/circle_arrow.png
     - assets/images/2.0x/circle_arrow.png
     - assets/images/3.0x/circle_arrow.png
+    - assets/images/accuracy_1.png
+    - assets/images/2.0x/accuracy_1.png
+    - assets/images/3.0x/accuracy_1.png
+    - assets/images/accuracy_2.png
+    - assets/images/2.0x/accuracy_2.png
+    - assets/images/3.0x/accuracy_2.png
+    - assets/images/accuracy_3.png
+    - assets/images/2.0x/accuracy_3.png
+    - assets/images/3.0x/accuracy_3.png
+    - assets/images/accuracy_4.png
+    - assets/images/2.0x/accuracy_4.png
+    - assets/images/3.0x/accuracy_4.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
