@@ -1,46 +1,21 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:naver_map_plugin/naver_map_plugin.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:nado_client_mvp/app/data/provider/storage_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'app/app.dart';
 
-void main() {
+Future<void> _initService() async {
+  final prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('is_first_run') ?? true) {
+    Storage storage = Storage();
+    await storage.deleteAll();
+    prefs.setBool('is_first_run', false);
+  }
+}
+
+void main() async {
+  await dotenv.load(fileName: 'assets/.local.env');
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initService();
   runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Naver Map',
-      home: NaverMapTest(),
-    );
-  }
-}
-
-class NaverMapTest extends StatefulWidget {
-  @override
-  _NaverMapTestState createState() => _NaverMapTestState();
-}
-
-class _NaverMapTestState extends State<NaverMapTest> {
-  Completer<NaverMapController> _controller = Completer();
-  MapType _mapType = MapType.Basic;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('NaverMap Test')),
-      body: Container(
-        child: NaverMap(
-          onMapCreated: onMapCreated,
-          mapType: _mapType,
-        ),
-      ),
-    );
-  }
-
-  void onMapCreated(NaverMapController controller) {
-    if (_controller.isCompleted) _controller = Completer();
-    _controller.complete(controller);
-  }
 }
