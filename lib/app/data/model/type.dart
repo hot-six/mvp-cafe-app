@@ -6,7 +6,8 @@ enum CafeCategoryType {
   CAFE('카페'),
   SPACE('공간'),
   FACILITY('시설'),
-  MOOD('분위기');
+  MOOD('분위기'),
+  NA('');
 
   final String displayName;
 
@@ -16,7 +17,7 @@ enum CafeCategoryType {
 @JsonSerializable()
 class CafeType {
   @JsonKey(name: "category")
-  String category;
+  CafeCategoryType category;
   @JsonKey(name: "type")
   String type;
   @JsonKey(name: "typeName")
@@ -32,13 +33,13 @@ class CafeType {
   });
 
   CafeType.empty()
-      : category = "",
+      : category = CafeCategoryType.NA,
         type = '',
         typeName = '',
         isTypeSelected = false;
 
   CafeType.full({
-    required String category,
+    required CafeCategoryType category,
     required String type,
     required String typeName,
   })  : category = category,
