@@ -11,12 +11,23 @@ import 'package:nado_client_mvp/app/data/provider/extensions/cafe_provider.dart'
 import 'package:nado_client_mvp/app/data/provider/storage_provider.dart';
 import 'package:nado_client_mvp/app/page/search/view.dart';
 
-const double INITCAFELIST_MINIMUMHEIGHT = 95.0;
+const double INITCAFELIST_MINIMUM_HEIGHT = 95.0;
+const double INITCAFELIST_DEFULT_HEIGHT = 290.0;
+
+const double CAFELIST_CHANGABLE_POINT = 20.0;
+
+enum CafeListHeightType {
+  MIN,
+  DEFAULT,
+  MAX,
+}
 
 class ClientPageLogic extends GetxController {
   final PagingController<int, CafeTile> searchPagingController =
       PagingController(firstPageKey: 0);
 
+  final Rx<CafeListHeightType> cafeListHeightStatus =
+      CafeListHeightType.DEFAULT.obs;
   final RxDouble cafeListHeight = 290.0.obs;
   final RxList<CafeType> selectedCafeType = <CafeType>[].obs;
   final RxList<int> favoriteCafeIdList = <int>[].obs;
@@ -29,6 +40,9 @@ class ClientPageLogic extends GetxController {
   final RxBool isShowFavoriteCafeList = false.obs;
 
   final MapType mapType = MapType.Basic;
+
+  final ScrollController cafeListScrollController = ScrollController();
+
   Completer<NaverMapController> mapController = Completer();
 
   @override
@@ -49,6 +63,7 @@ class ClientPageLogic extends GetxController {
   @override
   void dispose() {
     searchPagingController.dispose();
+    cafeListScrollController.dispose();
     super.dispose();
   }
 
@@ -76,13 +91,63 @@ class ClientPageLogic extends GetxController {
   void onChangeCafeListHeight(context, {required DragUpdateDetails details}) {
     final maximunCafeListHeight = MediaQuery.of(context).size.height - 200.0;
 
-    if (cafeListHeight.value - details.delta.dy < INITCAFELIST_MINIMUMHEIGHT) {
-      cafeListHeight.value = INITCAFELIST_MINIMUMHEIGHT;
+    if (cafeListHeight.value - details.delta.dy < INITCAFELIST_MINIMUM_HEIGHT) {
+      cafeListHeight.value = INITCAFELIST_MINIMUM_HEIGHT;
     } else if (cafeListHeight.value - details.delta.dy >
         maximunCafeListHeight) {
       cafeListHeight.value = maximunCafeListHeight;
     } else {
       cafeListHeight.value -= details.delta.dy;
+    }
+
+    cafeListScrollController.jumpTo(0);
+  }
+
+  void onTapOutCafeList(context) {
+    final maximunCafeListHeight = MediaQuery.of(context).size.height - 200.0;
+
+    var changedHeightValue = cafeListHeight.value -
+        (cafeListHeightStatus == CafeListHeightType.MAX
+            ? maximunCafeListHeight
+            : cafeListHeightStatus == CafeListHeightType.MIN
+                ? INITCAFELIST_MINIMUM_HEIGHT
+                : INITCAFELIST_DEFULT_HEIGHT);
+
+    switch (cafeListHeightStatus.value) {
+      case CafeListHeightType.DEFAULT:
+        if (changedHeightValue > CAFELIST_CHANGABLE_POINT) {
+          cafeListHeightStatus.value = CafeListHeightType.MAX;
+          cafeListHeight.value = maximunCafeListHeight;
+        } else if (changedHeightValue < -CAFELIST_CHANGABLE_POINT) {
+          cafeListHeightStatus.value = CafeListHeightType.MIN;
+          cafeListHeight.value = INITCAFELIST_MINIMUM_HEIGHT;
+        } else {
+          cafeListHeightStatus.value = CafeListHeightType.DEFAULT;
+          cafeListHeight.value = INITCAFELIST_DEFULT_HEIGHT;
+        }
+
+        break;
+
+      case CafeListHeightType.MIN:
+        if (changedHeightValue > CAFELIST_CHANGABLE_POINT) {
+          cafeListHeightStatus.value = CafeListHeightType.DEFAULT;
+          cafeListHeight.value = INITCAFELIST_DEFULT_HEIGHT;
+        } else {
+          cafeListHeightStatus.value = CafeListHeightType.MIN;
+          cafeListHeight.value = INITCAFELIST_MINIMUM_HEIGHT;
+        }
+        break;
+      case CafeListHeightType.MAX:
+        if (changedHeightValue < -CAFELIST_CHANGABLE_POINT) {
+          cafeListHeightStatus.value = CafeListHeightType.DEFAULT;
+          cafeListHeight.value = INITCAFELIST_DEFULT_HEIGHT;
+        } else {
+          cafeListHeightStatus.value = CafeListHeightType.MAX;
+          cafeListHeight.value = maximunCafeListHeight;
+        }
+        break;
+      default:
+        break;
     }
   }
 

@@ -152,8 +152,8 @@ class ClientPage extends StatelessWidget {
   }
 
   Widget _cafeListView(BuildContext context) {
-    return Obx(
-      () => Container(
+    return GestureDetector(
+      child: Container(
         width: double.infinity,
         height: logic.cafeListHeight.value,
         padding: EdgeInsets.only(
@@ -180,14 +180,10 @@ class ClientPage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: GestureDetector(
-                child: SizedBox(
-                  height: 15.0,
-                  width: 100.0,
-                  child: Image.asset('assets/images/handle.png'),
-                ),
-                onPanUpdate: (DragUpdateDetails details) =>
-                    logic.onChangeCafeListHeight(context, details: details),
+              child: SizedBox(
+                height: 15.0,
+                width: 100.0,
+                child: Image.asset('assets/images/handle.png'),
               ),
             ),
             Row(
@@ -227,49 +223,64 @@ class ClientPage extends StatelessWidget {
           ],
         ),
       ),
+      onPanUpdate: (DragUpdateDetails details) =>
+          logic.onChangeCafeListHeight(context, details: details),
+      onPanEnd: (DragEndDetails details) => logic.onTapOutCafeList(context),
     );
   }
 
   Widget _favoriteCafeList() {
-    return PagedListView(
-      pagingController: logic.searchPagingController,
-      builderDelegate: PagedChildBuilderDelegate<CafeTile>(
-        itemBuilder: (context, item, index) {
-          return CafeListTile(
-            cafeTileData: item,
-            initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
-          );
-        },
-        noItemsFoundIndicatorBuilder: (context) {
-          return Center(
-            child: Text('관심 카페가 없습니다.'),
-          );
-        },
-        firstPageProgressIndicatorBuilder: (context) {
-          return Center(child: LoadingIndicator());
-        },
+    return Obx(
+      () => PagedListView(
+        physics: logic.cafeListHeightStatus != CafeListHeightType.MAX
+            ? NeverScrollableScrollPhysics()
+            : null,
+        scrollController: logic.cafeListScrollController,
+        pagingController: logic.searchPagingController,
+        builderDelegate: PagedChildBuilderDelegate<CafeTile>(
+          itemBuilder: (context, item, index) {
+            return CafeListTile(
+              cafeTileData: item,
+              initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
+            );
+          },
+          noItemsFoundIndicatorBuilder: (context) {
+            return Center(
+              child: Text('관심 카페가 없습니다.'),
+            );
+          },
+          firstPageProgressIndicatorBuilder: (context) {
+            return Center(child: LoadingIndicator());
+          },
+        ),
       ),
     );
   }
 
   Widget _searchedCafeList() {
-    return PagedListView(
-      pagingController: logic.searchPagingController,
-      builderDelegate: PagedChildBuilderDelegate<CafeTile>(
-        itemBuilder: (context, item, index) {
-          return CafeListTile(
-            cafeTileData: item,
-            initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
-          );
-        },
-        noItemsFoundIndicatorBuilder: (context) {
-          return Center(
-            child: Text('해당 카페가 없습니다.'),
-          );
-        },
-        firstPageProgressIndicatorBuilder: (context) {
-          return Center(child: LoadingIndicator());
-        },
+    return Obx(
+      () => PagedListView(
+        physics: logic.cafeListHeightStatus != CafeListHeightType.MAX
+            ? NeverScrollableScrollPhysics()
+            : null,
+        scrollController: logic.cafeListScrollController,
+        pagingController: logic.searchPagingController,
+        builderDelegate: PagedChildBuilderDelegate<CafeTile>(
+          itemBuilder: (context, item, index) {
+            return CafeListTile(
+              cafeTileData: item,
+              initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
+            );
+          },
+          noItemsFoundIndicatorBuilder: (context) {
+            return Center(
+              child: Text('해당 카페가 없습니다.'),
+            );
+          },
+          firstPageProgressIndicatorBuilder: (context) {
+            return Center(child: LoadingIndicator());
+          },
+        ),
       ),
     );
   }
