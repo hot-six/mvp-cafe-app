@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "98329506216",
+    "project_id": "nado-mvp-app",
+    "storage_bucket": "nado-mvp-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98329506216:android:70e13574e7183d93142d9d",
+        "android_client_info": {
+          "package_name": "com.example.nado_client_mvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98329506216-641p3cqn0pda9aecl62pots8o6nii18m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfspXAy1gN0FDMrF2PyVVITZg1lxjiYt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98329506216-641p3cqn0pda9aecl62pots8o6nii18m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "98329506216-8k27d5stpehugkrru067utufseiga7nc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nadoClientMvp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
