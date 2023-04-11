@@ -37,8 +37,8 @@ class CafeSchedule {
   CafeSchedule.full({required String weekDayName})
       : weekDayName = weekDayName,
         isOpen = true,
-        startTime = "10:00",
-        endTime = "20:00",
+        startTime = "00:00",
+        endTime = "00:00",
         breakStartTime = "00:00",
         breakEndTime = "00:00";
 
