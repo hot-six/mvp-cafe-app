@@ -171,6 +171,9 @@ flutter:
     - assets/images/accuracy_4.png
     - assets/images/2.0x/accuracy_4.png
     - assets/images/3.0x/accuracy_4.png
+    - assets/images/favorite_marker.png
+    - assets/images/2.0x/favorite_marker.png
+    - assets/images/3.0x/favorite_marker.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
