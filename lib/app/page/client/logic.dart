@@ -9,6 +9,7 @@ import 'package:nado_client_mvp/app/data/model/type.dart';
 import 'package:nado_client_mvp/app/data/provider/extensions/base.dart';
 import 'package:nado_client_mvp/app/data/provider/extensions/cafe_provider.dart';
 import 'package:nado_client_mvp/app/data/provider/storage_provider.dart';
+import 'package:nado_client_mvp/app/page/client/widget/cafe_list_tile/view.dart';
 import 'package:nado_client_mvp/app/page/search/view.dart';
 
 const double INITCAFELIST_MINIMUM_HEIGHT = 95.0;
@@ -22,13 +23,14 @@ enum CafeListHeightType {
   MAX,
 }
 
-class ClientPageLogic extends GetxController {
+class ClientPageLogic extends GetxController
+    with GetSingleTickerProviderStateMixin {
   final PagingController<int, CafeTile> searchPagingController =
       PagingController(firstPageKey: 0);
 
   final Rx<CafeListHeightType> cafeListHeightStatus =
-      CafeListHeightType.DEFAULT.obs;
-  final RxDouble cafeListHeight = 290.0.obs;
+      CafeListHeightType.MIN.obs;
+  final RxDouble cafeListHeight = INITCAFELIST_DEFULT_HEIGHT.obs;
   final RxList<CafeType> selectedCafeType = <CafeType>[].obs;
   final RxList<int> favoriteCafeIdList = <int>[].obs;
   final RxList<CafeTile> favoriteCafeList = <CafeTile>[].obs;
@@ -38,6 +40,14 @@ class ClientPageLogic extends GetxController {
 
   final RxBool isMapLoaded = false.obs;
   final RxBool isShowFavoriteCafeList = false.obs;
+
+  double maxLatitude = 0.0;
+  double minLatitude = 0.0;
+  double maxLongitude = 0.0;
+  double minLongitude = 0.0;
+
+  LatLng southWestMarker = LatLng(0.0, 0.0);
+  LatLng northEastMarker = LatLng(0.0, 0.0);
 
   final MapType mapType = MapType.Basic;
 
@@ -69,6 +79,17 @@ class ClientPageLogic extends GetxController {
 
   void onMapCreated(NaverMapController controller) {
     if (mapController.isCompleted) mapController = Completer();
+
+    CameraUpdate mapCameraArea = CameraUpdate.fitBounds(
+      LatLngBounds(
+        southwest: LatLng((maxLatitude + minLatitude) / 2, minLongitude),
+        northeast: LatLng((maxLatitude + minLatitude) / 2, maxLongitude),
+      ),
+      padding: 50,
+    );
+
+    controller.moveCamera(mapCameraArea);
+
     mapController.complete(controller);
   }
 
@@ -125,7 +146,6 @@ class ClientPageLogic extends GetxController {
           cafeListHeightStatus.value = CafeListHeightType.DEFAULT;
           cafeListHeight.value = INITCAFELIST_DEFULT_HEIGHT;
         }
-
         break;
 
       case CafeListHeightType.MIN:
@@ -187,7 +207,7 @@ class ClientPageLogic extends GetxController {
           );
         }
 
-        _setMapPointer(newCafeList: responseCafeTileData);
+        setMapPointer(newCafeList: responseCafeTileData);
       }
     } catch (error) {
       printError(info: "Failed to load cafe list infomation");
@@ -226,6 +246,8 @@ class ClientPageLogic extends GetxController {
             responseInfo.pageable.pageNumber + 1,
           );
         }
+
+        setMapPointer(newCafeList: responseFavoriteCafeTileData);
       }
     } on Exception catch (error) {
       printError(info: "Failed to load favorite cafe infomation");
@@ -233,22 +255,34 @@ class ClientPageLogic extends GetxController {
     }
   }
 
-  Future<void> _setMapPointer({required List<CafeTile> newCafeList}) async {
+  Future<void> setMapPointer({required List<CafeTile> newCafeList}) async {
     isMapLoaded.value = false;
-    OverlayImage markerIcon = await OverlayImage.fromAssetImage(
+
+    OverlayImage defaultMarkerIcon = await OverlayImage.fromAssetImage(
       assetName: 'assets/images/marker.png',
+    );
+
+    OverlayImage favoriteMarkerIcon = await OverlayImage.fromAssetImage(
+      assetName: 'assets/images/favorite_marker.png',
     );
 
     mapMarkerList.addAll(newCafeList.map(
       (CafeTile cafe) {
+        _modifyCameraArea(LatLng(cafe.latitude, cafe.longitude));
+
         return Marker(
           markerId: 'cafe_${cafe.id}',
           position: LatLng(cafe.latitude, cafe.longitude),
           captionText: '${cafe.cafeName}',
           captionTextSize: 10.0,
-          icon: markerIcon,
+          icon: favoriteCafeIdList.contains(cafe.id)
+              ? favoriteMarkerIcon
+              : defaultMarkerIcon,
           width: 30,
           height: 35,
+          onMarkerTab: (marker, iconSize) {
+            _onMarkerTap(cafe);
+          },
         );
       },
     ).toList());
@@ -256,8 +290,45 @@ class ClientPageLogic extends GetxController {
     isMapLoaded.value = true;
   }
 
+  void _onMarkerTap(CafeTile cafeTileData) {
+    Get.dialog(
+      AlertDialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16.0),
+            ),
+          ),
+          contentPadding: EdgeInsets.all(10.0),
+          content: Wrap(
+            children: [
+              CafeListTile(
+                cafeTileData: cafeTileData,
+                initFavoriteState: cafeTileData.isFavorite ?? false,
+              ),
+            ],
+          )),
+    );
+  }
+
+  void _modifyCameraArea(LatLng latLng) {
+    if (maxLatitude == 0 || maxLatitude < latLng.latitude)
+      maxLatitude = latLng.latitude;
+
+    if (minLatitude == 0 || minLatitude > latLng.latitude)
+      minLatitude = latLng.latitude;
+
+    if (maxLongitude == 0 || maxLongitude < latLng.longitude)
+      maxLongitude = latLng.longitude;
+
+    if (minLongitude == 0 || minLongitude > latLng.longitude)
+      minLongitude = latLng.longitude;
+  }
+
   void controlShowFavoriteCafeToggle() async {
     isShowFavoriteCafeList.value = !isShowFavoriteCafeList.value;
+
+    mapMarkerList.clear();
 
     searchPagingController.refresh();
   }

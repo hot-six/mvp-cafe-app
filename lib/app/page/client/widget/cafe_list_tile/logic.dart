@@ -28,7 +28,7 @@ class CafeListTileLogic extends GetxController {
     tileAccuracy = accuracyIndex < 4 ? accuracyIndex + 1 : accuracyIndex;
   }
 
-  void onTapFavoriteCafeToggle() {
+  void onTapFavoriteCafeToggle() async {
     final Storage storage = Storage();
 
     if (isFavorite.value == true) {
@@ -38,6 +38,14 @@ class CafeListTileLogic extends GetxController {
     }
 
     isFavorite.value = !isFavorite.value;
+
+    if (Get.isRegistered<ClientPageLogic>()) {
+      ClientPageLogic clientLogic = Get.find();
+
+      await clientLogic.setMapPointer(
+        newCafeList: clientLogic.searchPagingController.itemList ?? [],
+      );
+    }
   }
 
   void onTapTile() {

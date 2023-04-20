@@ -23,23 +23,22 @@ class ClientPage extends StatelessWidget {
         body: Stack(
           children: [
             logic.isMapLoaded.value
-                ? NaverMap(
-                    initLocationTrackingMode: LocationTrackingMode.Follow,
-                    onMapCreated: logic.onMapCreated,
-                    mapType: logic.mapType,
-                    initialCameraPosition:
-                        logic.searchPagingController.itemList == null ||
-                                logic.totalNumberOfSearchedCafe == 0
-                            ? null
-                            : CameraPosition(
-                                target: LatLng(
-                                  logic.searchPagingController.itemList![0]
-                                      .latitude,
-                                  logic.searchPagingController.itemList![0]
-                                      .longitude,
-                                ),
-                              ),
-                    markers: logic.mapMarkerList,
+                ? ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height -
+                          INITCAFELIST_DEFULT_HEIGHT,
+                    ),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      height: MediaQuery.of(context).size.height -
+                          logic.cafeListHeight.value,
+                      child: NaverMap(
+                        initLocationTrackingMode: LocationTrackingMode.Follow,
+                        onMapCreated: logic.onMapCreated,
+                        mapType: logic.mapType,
+                        markers: logic.mapMarkerList,
+                      ),
+                    ),
                   )
                 : Center(
                     child: LoadingIndicator(),
@@ -153,7 +152,8 @@ class ClientPage extends StatelessWidget {
 
   Widget _cafeListView(BuildContext context) {
     return GestureDetector(
-      child: Container(
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
         width: double.infinity,
         height: logic.cafeListHeight.value,
         padding: EdgeInsets.only(
@@ -230,57 +230,57 @@ class ClientPage extends StatelessWidget {
   }
 
   Widget _favoriteCafeList() {
-    return Obx(
-      () => PagedListView(
-        physics: logic.cafeListHeightStatus != CafeListHeightType.MAX
-            ? NeverScrollableScrollPhysics()
-            : null,
-        scrollController: logic.cafeListScrollController,
-        pagingController: logic.searchPagingController,
-        builderDelegate: PagedChildBuilderDelegate<CafeTile>(
-          itemBuilder: (context, item, index) {
-            return CafeListTile(
-              cafeTileData: item,
-              initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
-            );
-          },
-          noItemsFoundIndicatorBuilder: (context) {
-            return Center(
-              child: Text('관심 카페가 없습니다.'),
-            );
-          },
-          firstPageProgressIndicatorBuilder: (context) {
-            return Center(child: LoadingIndicator());
-          },
-        ),
+    return PagedListView(
+      scrollController: logic.cafeListScrollController,
+      pagingController: logic.searchPagingController,
+      builderDelegate: PagedChildBuilderDelegate<CafeTile>(
+        itemBuilder: (context, item, index) {
+          return Column(
+            children: [
+              CafeListTile(
+                cafeTileData: item,
+                initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
+              ),
+              SizedBox(height: 10),
+            ],
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          return Center(
+            child: Text('관심 카페가 없습니다.'),
+          );
+        },
+        firstPageProgressIndicatorBuilder: (context) {
+          return Center(child: LoadingIndicator());
+        },
       ),
     );
   }
 
   Widget _searchedCafeList() {
-    return Obx(
-      () => PagedListView(
-        physics: logic.cafeListHeightStatus != CafeListHeightType.MAX
-            ? NeverScrollableScrollPhysics()
-            : null,
-        scrollController: logic.cafeListScrollController,
-        pagingController: logic.searchPagingController,
-        builderDelegate: PagedChildBuilderDelegate<CafeTile>(
-          itemBuilder: (context, item, index) {
-            return CafeListTile(
-              cafeTileData: item,
-              initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
-            );
-          },
-          noItemsFoundIndicatorBuilder: (context) {
-            return Center(
-              child: Text('해당 카페가 없습니다.'),
-            );
-          },
-          firstPageProgressIndicatorBuilder: (context) {
-            return Center(child: LoadingIndicator());
-          },
-        ),
+    return PagedListView(
+      scrollController: logic.cafeListScrollController,
+      pagingController: logic.searchPagingController,
+      builderDelegate: PagedChildBuilderDelegate<CafeTile>(
+        itemBuilder: (context, item, index) {
+          return Column(
+            children: [
+              CafeListTile(
+                cafeTileData: item,
+                initFavoriteState: logic.favoriteCafeIdList.contains(item.id),
+              ),
+              SizedBox(height: 10),
+            ],
+          );
+        },
+        noItemsFoundIndicatorBuilder: (context) {
+          return Center(
+            child: Text('해당 카페가 없습니다.'),
+          );
+        },
+        firstPageProgressIndicatorBuilder: (context) {
+          return Center(child: LoadingIndicator());
+        },
       ),
     );
   }
