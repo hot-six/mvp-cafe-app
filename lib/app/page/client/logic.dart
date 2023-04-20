@@ -178,7 +178,12 @@ class ClientPageLogic extends GetxController
 
   Future<void> _fetchCafeList(int pageKey) async {
     final NadoProvider provider = Get.find<NadoProvider>();
+    final Storage storage = Storage();
+
     try {
+      // 사장 목데이터 추가
+      CafeTile ceoCafeTile = await storage.getCeoCafeTile();
+
       var response = await provider.getCafeList(
         filterTypes: selectedCafeType
             .map(
@@ -194,7 +199,10 @@ class ClientPageLogic extends GetxController
         if (totalNumberOfSearchedCafe.value != responseInfo.totalElements)
           totalNumberOfSearchedCafe.value = responseInfo.totalElements;
 
-        List<CafeTile> responseCafeTileData = responseInfo.contents;
+        List<CafeTile> responseCafeTileData =
+            searchPagingController.value.nextPageKey == 0
+                ? [ceoCafeTile, ...responseInfo.contents]
+                : responseInfo.contents;
 
         if (responseInfo.last) {
           searchPagingController.appendLastPage(
