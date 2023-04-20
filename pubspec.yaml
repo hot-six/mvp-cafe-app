@@ -49,6 +49,7 @@ dependencies:
   dropdown_button2: ^2.0.0
   carousel_slider: ^4.2.1
   infinite_scroll_pagination: ^3.2.0
+  flutter_web_frame: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -174,6 +175,9 @@ flutter:
     - assets/images/favorite_marker.png
     - assets/images/2.0x/favorite_marker.png
     - assets/images/3.0x/favorite_marker.png
+    - assets/images/home.png
+    - assets/images/2.0x/home.png
+    - assets/images/3.0x/home.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
