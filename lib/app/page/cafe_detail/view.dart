@@ -304,6 +304,8 @@ class CafeDetailPage extends StatelessWidget {
         _cafeOpenTime(),
         greyDivider,
         _cafePhoneNumber(),
+        greyDivider,
+        _cafeDescription(),
       ],
     );
   }
@@ -410,6 +412,53 @@ class CafeDetailPage extends StatelessWidget {
           Text(
             '${logic.cafeData.cafeNumber}',
             style: TextStyle(fontSize: 16.0),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _cafeDescription() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset('assets/images/home.png'),
+          SizedBox(width: 14.0),
+          Text(
+            '카페 설명',
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 31.0),
+          Obx(
+            () => Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${logic.cafeData.cafeDescription}',
+                    style: TextStyle(fontSize: 16.0),
+                    overflow:
+                        logic.isCollapsed.value ? TextOverflow.ellipsis : null,
+                    maxLines: logic.isCollapsed.value ? 2 : null,
+                  ),
+                  SizedBox(height: 3.0),
+                  InkWell(
+                    onTap: () {
+                      logic.isCollapsed.value = !logic.isCollapsed.value;
+                    },
+                    child: Text(
+                      logic.isCollapsed.value ? '더보기' : '접기',
+                      style: TextStyle(
+                        color: NadoColor.greyColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

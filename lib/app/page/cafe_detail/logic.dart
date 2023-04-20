@@ -27,6 +27,7 @@ class CafeDetailPageLogic extends GetxController
 
   RxBool expandOpenTimeList = false.obs;
   RxBool isFavorite = false.obs;
+  RxBool isCollapsed = true.obs;
   RxInt thumbnailCarouselIndex = 0.obs;
 
   RxBool isLoaded = false.obs;
