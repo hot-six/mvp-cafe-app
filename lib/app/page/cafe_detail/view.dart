@@ -257,17 +257,6 @@ class CafeDetailPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 12.0),
-                  if (logic.cafeData.cafeDescription != null) ...[
-                    Text(
-                      '${logic.cafeData.cafeDescription}',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 12.0),
-                  ],
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
@@ -433,31 +422,34 @@ class CafeDetailPage extends StatelessWidget {
           SizedBox(width: 31.0),
           Obx(
             () => Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${logic.cafeData.cafeDescription}',
-                    style: TextStyle(fontSize: 16.0),
-                    overflow:
-                        logic.isCollapsed.value ? TextOverflow.ellipsis : null,
-                    maxLines: logic.isCollapsed.value ? 2 : null,
-                  ),
-                  SizedBox(height: 3.0),
-                  InkWell(
-                    onTap: () {
-                      logic.isCollapsed.value = !logic.isCollapsed.value;
-                    },
-                    child: Text(
-                      logic.isCollapsed.value ? '더보기' : '접기',
-                      style: TextStyle(
-                        color: NadoColor.greyColor,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: logic.cafeData.cafeDescription != null
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${logic.cafeData.cafeDescription}',
+                          style: TextStyle(fontSize: 16.0),
+                          overflow: logic.isCollapsed.value
+                              ? TextOverflow.ellipsis
+                              : null,
+                          maxLines: logic.isCollapsed.value ? 2 : null,
+                        ),
+                        SizedBox(height: 3.0),
+                        InkWell(
+                          onTap: () {
+                            logic.isCollapsed.value = !logic.isCollapsed.value;
+                          },
+                          child: Text(
+                            logic.isCollapsed.value ? '더보기' : '접기',
+                            style: TextStyle(
+                              color: NadoColor.greyColor,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink(),
             ),
           ),
         ],
