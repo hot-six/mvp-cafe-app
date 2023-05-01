@@ -88,16 +88,20 @@ class CafeDetailPageLogic extends GetxController
 
     isLoaded.value = false;
     try {
-      var response = await provider.getCafeDetailData(
-        cafeId: cafeId,
-        filterTypes: filterTypes,
-      );
-
-      if (response.isOk && response.body != null) {
-        cafeData = response.body!;
+      if (cafeId == '99999') {
+        await _fetchStoredCafeData();
       } else {
-        printError(info: 'Failed to get cafe detail information.');
-        cafeData = CafeDetail.empty();
+        var response = await provider.getCafeDetailData(
+          cafeId: cafeId,
+          filterTypes: filterTypes,
+        );
+
+        if (response.isOk && response.body != null) {
+          cafeData = response.body!;
+        } else {
+          printError(info: 'Failed to get cafe detail information.');
+          cafeData = CafeDetail.empty();
+        }
       }
     } on Exception catch (error) {
       error.printError();
