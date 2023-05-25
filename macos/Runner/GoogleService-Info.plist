@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>98329506216-8k27d5stpehugkrru067utufseiga7nc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.98329506216-8k27d5stpehugkrru067utufseiga7nc</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB4iLM0VLON-zIDRrHwbZKldPW9RFwoirs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>98329506216</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.nadoClientMvp</string>
+	<key>PROJECT_ID</key>
+	<string>nado-mvp-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nado-mvp-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:98329506216:ios:5481a139f4a980bb142d9d</string>
+</dict>
+</plist>
