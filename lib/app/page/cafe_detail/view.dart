@@ -248,6 +248,7 @@ class CafeDetailPage extends StatelessWidget {
                                   ),
                           ),
                         ),
+                  SizedBox(height: 10.0),
                   Text(
                     '${logic.cafeData.cafeName}',
                     style: TextStyle(
