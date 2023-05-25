@@ -200,7 +200,8 @@ class ClientPageLogic extends GetxController
           totalNumberOfSearchedCafe.value = responseInfo.totalElements;
 
         List<CafeTile> responseCafeTileData =
-            searchPagingController.value.nextPageKey == 0
+            searchPagingController.value.nextPageKey == 0 &&
+                    selectedCafeType.length == 0
                 ? [ceoCafeTile, ...responseInfo.contents]
                 : responseInfo.contents;
 
