@@ -24,8 +24,9 @@ class CafeListTileLogic extends GetxController {
 
     isFavorite = cafeTileData.isFavorite!.obs;
 
-    int accuracyIndex = cafeTileData.accuracy ~/ 25;
-    tileAccuracy = accuracyIndex < 4 ? accuracyIndex + 1 : accuracyIndex;
+    double accuracyIndex = cafeTileData.accuracy / 25;
+    tileAccuracy =
+        accuracyIndex < 4 ? accuracyIndex.ceil() : accuracyIndex.toInt();
   }
 
   void onTapFavoriteCafeToggle() async {
